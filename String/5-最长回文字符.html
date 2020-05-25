@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <p>
+        给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。<br/>
+    
+        <br/>
+        示例 1：<br/>
+
+            输入: "babad" <br/>
+            输出: "bab" <br/>
+            注意: "aba" 也是一个有效答案。 <br/>
+
+        <br/>
+        示例 2：<br/> 
+
+            输入: "cbbd" <br/>
+            输出: "bb" <br/>
+    </p>
+    <script>
+        /**
+        * @param {string} s
+        * @return {string}
+        */
+        var longestPalindrome = function(s) {
+            let length = s.length,
+                maxLength = 1,
+                maxString = s.charAt(0);
+            for(let i = 0; i < length; i++) {
+                // 从最长字符开始比较，当i固定时，字符长度越来越小
+                for(let j = length; j > i; j--) {
+                    let substr = s.substring(i, j),
+                        m = 0,
+                        n =  substr.length -1,
+                        flag = true;
+                    if (substr.length > maxLength) {
+                        for(; m <= n; m++, n--) {
+                            let start = substr.charAt(m),
+                                end = substr.charAt(n);
+                            if (start !== end) {
+                                flag = false;
+                                break;
+                            }
+
+                        }
+                    } else {
+                        // 当前字符长度小于找到的回文长度，则没必要进行后续的比较
+                        // 因为字符长度越来越小，直接进入外层i+1次比较
+                        break;
+                    }
+                    
+                    if (flag && substr.length > maxLength) {
+                        maxLength = substr.length;
+                        maxString = substr;
+                        break;
+                    }
+                    
+                }
+            }
+            return maxString;
+        };
+        let res = longestPalindrome('babad');
+        console.log(res);
+
+        /**
+        * 运行结果：通过
+        * 执行用时：588 ms 内存消耗：42.4 MB
+        * 我的提交执行用时已经战胜 18.19 % 的 javascript 提交记录
+        * 优化的地方：比较时从最长字符开始，如果找到
+        */
+    </script>
+</body>
+</html>
