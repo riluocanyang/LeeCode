@@ -75,5 +75,73 @@
         * 优化的地方：比较时从最长字符开始，如果找到
         */
     </script>
+    <script>
+        // 优化做法 - 动态规划
+        // 思路：   
+        /**
+        * @param {string} s
+        * @return {string}
+        */
+        var longestPalindrome = function(s) {
+            if (!s) return '';
+            let res = s[0];
+            const length  =s.length;
+            const dp = [];
+            for(let i =length-1; i >=0;i--){
+                dp[i] = [];
+                for(let j = i; j< length;j++) {
+                    if (j-i==0) {
+                        dp[i][j] = true
+                    } else if(j-i==1 && s[i] == s[j]) {
+                        dp[i][j] = true
+                    } else if(j-i>1 && s[i] == s[j] && dp[i+1][j-1]) {
+                        dp[i][j] = true
+                    }
+                    if(dp[i][j] && j-i+1>res.length) {
+                        res = s.slice(i,j+1)
+                    }
+                }
+               
+            }
+            return res;
+        };
+        /**
+        * 运行结果：通过
+        * 执行用时：536 ms 内存消耗：63.8MB
+        * 我的提交执行用时已经战胜 23.59 % 的 javascript 提交记录
+        */
+    </script>
+    <script>
+        // 优化做法 - 极简中心扩展法
+        /**
+        * @param {string} s
+        * @return {string}
+        */
+        var longestPalindrome = function(s) {
+            if(!s) return '';
+            const length = s.length;
+            let res = s[0];
+            for(let i = 0; i< length; i++) {
+                for(let j = 1; j<=2;j++) {
+                    let left = i;
+                    let right  = i + j;
+                    while(left>=0 && right < length && s[left] == s[right]) {
+                        left--;
+                        right++;
+                    }
+                    let resLength = (right-1)-(left+1)+1;
+                    if(resLength > res.length) {
+                        res = s.slice(left+1,right)
+                    }
+                }
+            }
+            return res;
+        };
+         /**
+        * 运行结果：通过
+        * 执行用时：108 ms 内存消耗：36.3MB
+        * 我的提交执行用时已经战胜 71.59 % 的 javascript 提交记录
+        */
+    </script>
 </body>
 </html>
