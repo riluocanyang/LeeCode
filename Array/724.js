@@ -1,4 +1,4 @@
-// 寻找数组的中心索引
+// 724 - 寻找数组的中心索引
 
 // 给你一个整数数组 nums，请编写一个能够返回数组 “中心下标” 的方法。
 
@@ -52,6 +52,22 @@ var pivotIndex = function(nums) {
   return -1;
 
 };
+
+// 代码优化
+var pivotIndex = function(nums) {
+  const total = nums.reduce((a, b) => a + b, 0)
+  // right = total - nums[i] - left; left == right
+  // left = total - nums[i] - left
+  // 2 * left + nums[i] = total
+  let sum = 0;
+  for(let i = 0; i < nums.length; i++) {
+    if (2 * sum + nums[i] === total) {
+      return i
+    }
+    sum += nums[i]
+  }
+  return -1;
+}
 
 console.log(pivotIndex([1, 7, 3, 6, 5, 6]))
 console.log(pivotIndex([1,2,3]))
